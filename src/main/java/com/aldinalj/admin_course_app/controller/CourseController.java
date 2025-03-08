@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,7 +27,7 @@ public class CourseController {
     public ResponseEntity<?> createOrUpdateCourse(@RequestBody @Valid Course course) {
         try {
             Course savedCourse = courseService.createOrUpdateCourse(course);
-            return ResponseEntity.ok(savedCourse);
+            return ResponseEntity.created(URI.create("/api/courses/" + savedCourse.getId())).body(savedCourse);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
@@ -56,7 +59,7 @@ public class CourseController {
         try {
             if (courseRepository.existsById(id)) {
                 courseRepository.deleteById(id);
-                return ResponseEntity.status(200).body("Course deleted successfully.");
+                return ResponseEntity.status(204).body("Course deleted successfully.");
             } else {
                 return ResponseEntity.status(404).body("Course not found.");
             }
@@ -64,5 +67,29 @@ public class CourseController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+    @Operation(summary = "Get all courses from database")
+    @GetMapping
+    public ResponseEntity<List<Course>> getCourse(){
+        List<Course> courses = courseService.getAllCourses();
+
+        if (courses.isEmpty()){
+            return ResponseEntity.status(404).body(courses);
+        }
+
+        return ResponseEntity.status(200).body(courses);
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable Integer id){
+        Optional<Course> optionalCourse = courseService.getCourseById(id);
+        if(optionalCourse.isEmpty()){
+            return ResponseEntity.status(404).body(null);
+        }
+
+        return ResponseEntity.status(200).body(optionalCourse.get());
+    }
+
+
 
 }
