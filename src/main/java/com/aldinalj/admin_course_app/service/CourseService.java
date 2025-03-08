@@ -29,4 +29,13 @@ public class CourseService {
 
         return courseRepository.save(course);
     }
+
+    public Long getCourseId(String courseName){
+         Optional<Course> optionalCourse = courseRepository.findCourseByName(courseName);
+         if(optionalCourse.isPresent()) {
+             Course tempCourse = optionalCourse.get();
+             return tempCourse.getId();
+         }
+         return null;
+    }
 }
