@@ -80,6 +80,7 @@ public class CourseController {
 
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable Integer id){
         Optional<Course> optionalCourse = courseService.getCourseById(id);
