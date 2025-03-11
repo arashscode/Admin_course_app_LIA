@@ -33,11 +33,11 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                         {
-                            "firstName": "John",
-                            "lastName": "Doe",
-                            "email": "johndoe@example.com",
+                            "firstName": "Håkan",
+                            "lastName": "Gleissman",
+                            "email": "hakan.gleissman@sti.se",
                             "password": "password123",
-                            "role": "USER"
+                            "role": "ADMIN"
                         }
                         """))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -46,7 +46,7 @@ public class UserControllerTest {
                 .getContentAsString();
 
 
-        testUserId = userService.getUserByEmail("johndoe@example.com").get().getId();
+        testUserId = userService.getUserByEmail("hakan.gleissman@sti.se").get().getId();
     }
 
     @Test
@@ -73,11 +73,11 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                         {
-                            "firstName": "Jane",
-                            "lastName": "Doe",
-                            "email": "janedoe@example.com",
+                            "firstName": "Martin",
+                            "lastName": "Jernström",
+                            "email": "martin.jernstrom@stud.sti.se",
                             "password": "newpassword123",
-                            "role": "ADMIN"
+                            "role": "USER"
                         }
                         """))
                 .andExpect(MockMvcResultMatchers.status().isOk());
