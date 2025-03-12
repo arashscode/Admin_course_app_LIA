@@ -33,6 +33,9 @@ public class CourseController {
         }
     }
 
+    //TODO
+    //add 404 IF NOT FOUND
+
     @Operation(summary = "Update existing course in database")
     @PutMapping("/{id}")
     public ResponseEntity<String> updateCourse(@PathVariable Integer id, @RequestBody Course updatedCourse) {

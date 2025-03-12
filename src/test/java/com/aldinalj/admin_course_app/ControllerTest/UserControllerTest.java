@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -27,6 +28,7 @@ public class UserControllerTest {
     private Long testUserId;
 
     @BeforeEach
+    @WithMockUser(roles = "ADMIN")
     void setUp() throws Exception {
         // Skapa en testanvändare via API
         String response = this.mockMvc.perform(post("/api/users")
@@ -50,24 +52,28 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void userControllerGetTest() throws Exception {
         this.mockMvc.perform(get("/api/users"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void userControllerGetByIdTest() throws Exception {
         this.mockMvc.perform(get("/api/users/" + testUserId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void userControllerGetByIdFailTest() throws Exception {
         this.mockMvc.perform(get("/api/users/0"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void userControllerPutTest() throws Exception {
         this.mockMvc.perform(put("/api/users/" + testUserId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,6 +90,7 @@ public class UserControllerTest {
     }
 
     @AfterEach
+    @WithMockUser(roles = "ADMIN")
     void tearDown() throws Exception {
         this.mockMvc.perform(delete("/api/users/" + testUserId))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());

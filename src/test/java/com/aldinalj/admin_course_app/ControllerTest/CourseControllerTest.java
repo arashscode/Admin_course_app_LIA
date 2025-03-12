@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-
+//TODO
+//Test size of number of courses
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CourseControllerTest {
@@ -28,6 +30,7 @@ public class CourseControllerTest {
     private CourseService courseService;
 
     @BeforeEach
+    @WithMockUser(roles = "ADMIN")
     void setUp() throws Exception {
 
         this.mockMvc.perform(post("/api/courses")
@@ -46,11 +49,13 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void courseControllerGetTest() throws Exception {
         this.mockMvc.perform(get("/api/courses"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
     @Test
+    @WithMockUser(roles = "ADMIN")
     void courseControllerGetIdTest() throws Exception {
 
         Long testCourseId = courseService.getCourseId("TestCourse");
@@ -61,6 +66,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void courseControllerGetIdFailTest() throws Exception {
         this.mockMvc.perform(get("/api/courses/0"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -68,6 +74,7 @@ public class CourseControllerTest {
 
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void CourseControllerPutTest() throws Exception{
 
         Long testCourseId = courseService.getCourseId("TestCourse");
@@ -88,6 +95,7 @@ public class CourseControllerTest {
     }
 
     @AfterEach
+    @WithMockUser(roles = "ADMIN")
     void tearDown() throws Exception {
             Long testCourseId = courseService.getCourseId("TestCourse");
             this.mockMvc.perform(delete("/api/courses/" + testCourseId))

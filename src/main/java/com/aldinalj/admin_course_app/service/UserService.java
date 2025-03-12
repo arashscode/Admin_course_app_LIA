@@ -59,4 +59,12 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+    public void createOrUpdateUser(User user){
+
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+
+    }
 }
