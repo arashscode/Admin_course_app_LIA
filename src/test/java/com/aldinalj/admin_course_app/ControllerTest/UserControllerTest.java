@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test") //  Better of option for multiple test. Otherwise, use code below. /Arash
+@ActiveProfiles("test") //  Better option for multiple test. Otherwise, use code below. /Arash
 //@TestPropertySource(locations = "classpath:application-test.properties")
 public class UserControllerTest {
 
