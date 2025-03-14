@@ -51,14 +51,15 @@ public class UserService {
     }
 
     // Uppdatera en användare
-    public User updateUser(Long id, User updatedUser) {
+    public UserGetDTO updateUser(Long id, UserPostDTO updatedUserDTO) {
         return userRepository.findById(id)
                 .map(user -> {
-                    user.setFirstName(updatedUser.getFirstName());
-                    user.setLastName(updatedUser.getLastName());
-                    user.setEmail(updatedUser.getEmail());
-                    user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-                    return userRepository.save(user);
+                    user.setFirstName(updatedUserDTO.getFirstName());
+                    user.setLastName(updatedUserDTO.getLastName());
+                    user.setEmail(updatedUserDTO.getEmail());
+                    user.setPassword(passwordEncoder.encode(updatedUserDTO.getPassword()));
+                    userRepository.save(user);
+                    return toDTO(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
