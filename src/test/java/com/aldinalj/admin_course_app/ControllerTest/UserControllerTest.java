@@ -38,7 +38,7 @@ public class UserControllerTest {
                             "firstName": "Håkan",
                             "lastName": "Gleissman",
                             "email": "hakan.gleissman@sti.se",
-                            "password": "password123",
+                            "password": "Password123",
                             "role": "ADMIN"
                         }
                         """))
@@ -82,7 +82,7 @@ public class UserControllerTest {
                             "firstName": "Martin",
                             "lastName": "Jernström",
                             "email": "martin.jernstrom@stud.sti.se",
-                            "password": "newpassword123",
+                            "password": "newPassword123!",
                             "role": "USER"
                         }
                         """))

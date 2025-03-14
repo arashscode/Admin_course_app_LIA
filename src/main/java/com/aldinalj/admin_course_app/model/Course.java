@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
@@ -15,18 +18,17 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
+    @NotBlank
     private String name;
-    @NotNull
+    @NotBlank
     private String code;
-    @NotNull
+    @FutureOrPresent
     private LocalDate startDate;
-    @NotNull
+    @Future
     private LocalDate endDate;
-    @NotNull
+    @NotBlank
     private String description;
-    @NotNull
-    private String adminId;
+
 
     public Long getId() {
         return id;
@@ -72,11 +74,4 @@ public class Course {
         this.description = description;
     }
 
-    public String getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(String adminId) {
-        this.adminId = adminId;
-    }
 }
