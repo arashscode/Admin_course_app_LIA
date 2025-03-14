@@ -24,7 +24,6 @@ public class DataInitializer {
                 dummyCourse.setStartDate(LocalDate.now());
                 dummyCourse.setEndDate(LocalDate.of(2099, 12, 31));
                 dummyCourse.setDescription("This is a dummy course");
-                dummyCourse.setAdminId("DummyID");
 
                 courseService.createOrUpdateCourse(dummyCourse);
                 System.out.println("Dummy course added!");

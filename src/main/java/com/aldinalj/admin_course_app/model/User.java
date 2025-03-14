@@ -1,7 +1,7 @@
 package com.aldinalj.admin_course_app.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 
 @Entity
@@ -11,16 +11,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
+    @NotBlank
     private String firstName;
-    @NotNull
+    @NotBlank
     private String lastName;
     @NotNull
+    @Size (min = 8) //är detta redundant?
+  //  @Pattern (regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]$",
+          // message = "Password must contain at least one letter, one number, one special character")
     private String password;
-    @NotNull
+    @NotBlank
+    @Email
     @Column(unique = true)
     private String email;
-    @NotNull
+    @NotBlank
     private String role;
 
     public User(){

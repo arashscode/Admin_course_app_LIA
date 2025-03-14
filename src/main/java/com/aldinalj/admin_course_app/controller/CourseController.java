@@ -49,7 +49,6 @@ public class CourseController {
         existingCourse.setStartDate(updatedCourse.getStartDate());
         existingCourse.setEndDate(updatedCourse.getEndDate());
         existingCourse.setDescription(updatedCourse.getDescription());
-        existingCourse.setAdminId(updatedCourse.getAdminId());
 
         courseService.createOrUpdateCourse(existingCourse);
 
