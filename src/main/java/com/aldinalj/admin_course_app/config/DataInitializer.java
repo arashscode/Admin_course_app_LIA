@@ -2,6 +2,7 @@ package com.aldinalj.admin_course_app.config;
 
 import com.aldinalj.admin_course_app.model.Category;
 import com.aldinalj.admin_course_app.model.Course;
+import com.aldinalj.admin_course_app.model.Role;
 import com.aldinalj.admin_course_app.model.User;
 import com.aldinalj.admin_course_app.repository.CourseRepository;
 import com.aldinalj.admin_course_app.service.CourseService;
@@ -35,7 +36,7 @@ public class DataInitializer {
 
             if (userService.getAllUsers().isEmpty()){
                 User dummyUser = new User();
-                dummyUser.setRole("ADMIN");
+                dummyUser.setRole(Role.ADMIN); //Roles instead of string. /Arash
                 dummyUser.setFirstName("dummy");
                 dummyUser.setLastName("dummy");
                 dummyUser.setPassword("DummyPassword");

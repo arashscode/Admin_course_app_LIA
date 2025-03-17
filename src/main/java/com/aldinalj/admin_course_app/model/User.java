@@ -3,7 +3,6 @@ package com.aldinalj.admin_course_app.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -11,26 +10,30 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotBlank
     private String firstName;
+
     @NotBlank
     private String lastName;
+
     @NotNull
-    @Size (min = 8) //är detta redundant?
-  //  @Pattern (regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]$",
-          // message = "Password must contain at least one letter, one number, one special character")
+    @Size(min = 8)
     private String password;
+
     @NotBlank
     @Email
     @Column(unique = true)
     private String email;
-    @NotBlank
-    private String role;
 
-    public User(){
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Role role;
+
+    public User() {
     }
 
-    public User(String firstName, String lastName, String password, String email, String role) {
+    public User(String firstName, String lastName, String password, String email, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -42,6 +45,9 @@ public class User {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -75,11 +81,11 @@ public class User {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

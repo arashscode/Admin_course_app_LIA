@@ -72,7 +72,7 @@ public class UserControllerTest {
         if (optionalUser.isPresent()) {
             testUserId = optionalUser.get().getId();
         } else {
-            throw new RuntimeException("Testanvändaren kunde inte skapas.");
+            throw new RuntimeException("Test user could not be created.");
         }
     }
 
