@@ -24,8 +24,11 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Get all users")
-    public List<UserGetDTO> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserGetDTO>> getAllUsers() {
+        List<UserGetDTO> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            return ResponseEntity.status(404).body(users);
+        } else return ResponseEntity.status(200).body(users);
     }
 
     @GetMapping("/{id}")
@@ -38,20 +41,29 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Create a new user")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserPostDTO user) {
-        User savedUser = userService.createUser(user);
-        return ResponseEntity.created(URI.create("/api/users/" + savedUser.getId())).body(savedUser);
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserPostDTO user) {
+        try {
+            User savedUser = userService.createUser(user);
+            return ResponseEntity.created(URI.create("/api/users/" + savedUser.getId())).body(savedUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing user")
     public ResponseEntity<UserGetDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserPostDTO updatedUser) {
-        return ResponseEntity.ok(userService.updateUser(id, updatedUser));
+        if(!userService.getUserById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else return ResponseEntity.ok(userService.updateUser(id, updatedUser));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a user")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        if(!userService.getUserById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

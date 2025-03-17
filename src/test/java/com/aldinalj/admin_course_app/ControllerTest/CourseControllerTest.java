@@ -41,7 +41,7 @@ public class CourseControllerTest {
                             "code": "T2026",
                             "startDate": "2026-03-07",
                             "endDate": "2099-03-07",
-                            "description": "testDescription"                       
+                            "description": "testDescription"
                         }
                         """))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
@@ -81,12 +81,12 @@ public class CourseControllerTest {
         this.mockMvc.perform(put("/api/courses/" + testCourseId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                {              
+                {
                     "name": "TestCourse",
                     "code": "T2027",
                     "startDate": "2027-03-07",
                     "endDate": "2099-03-07",
-                    "description": "testDescription"                   
+                    "description": "testDescription"
                 }
                 """))
                 .andExpect(MockMvcResultMatchers.status().isOk());
