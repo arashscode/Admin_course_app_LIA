@@ -1,12 +1,17 @@
 package com.aldinalj.admin_course_app.service;
 
+import com.aldinalj.admin_course_app.model.DTO.UserGetDTO;
+import com.aldinalj.admin_course_app.model.DTO.UserPostDTO;
 import com.aldinalj.admin_course_app.model.User;
 import com.aldinalj.admin_course_app.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -19,14 +24,19 @@ public class UserService {
     }
 
     // Hämta alla användare
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserGetDTO> getAllUsers() {
+
+        return userRepository.findAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     // Hämta en användare baserat på ID
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<UserGetDTO> getUserById(Long id) {
+            Optional<User> user = userRepository.findById(id);
+            return user.map(this::toDTO);
     }
+
 
     // Hämta en användare baserat på e-post
     public Optional<User> getUserByEmail(String email) {
@@ -34,20 +44,22 @@ public class UserService {
     }
 
     // Skapa en ny användare
-    public User createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public User createUser(UserPostDTO userPostDTO) {
+        userPostDTO.setPassword(passwordEncoder.encode(userPostDTO.getPassword()));
+        User userToEntity = toEntity(userPostDTO);
+        return userRepository.save(userToEntity);
     }
 
     // Uppdatera en användare
-    public User updateUser(Long id, User updatedUser) {
+    public UserGetDTO updateUser(Long id, UserPostDTO updatedUserDTO) {
         return userRepository.findById(id)
                 .map(user -> {
-                    user.setFirstName(updatedUser.getFirstName());
-                    user.setLastName(updatedUser.getLastName());
-                    user.setEmail(updatedUser.getEmail());
-                    user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-                    return userRepository.save(user);
+                    user.setFirstName(updatedUserDTO.getFirstName());
+                    user.setLastName(updatedUserDTO.getLastName());
+                    user.setEmail(updatedUserDTO.getEmail());
+                    user.setPassword(passwordEncoder.encode(updatedUserDTO.getPassword()));
+                    userRepository.save(user);
+                    return toDTO(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
@@ -66,5 +78,13 @@ public class UserService {
         user.setPassword(encodedPassword);
         userRepository.save(user);
 
+    }
+
+    private UserGetDTO toDTO(User user) {
+        return new UserGetDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
+    }
+
+    private User toEntity(UserPostDTO userPostDTO) {
+        return new User(userPostDTO.getFirstName(), userPostDTO.getLastName(),userPostDTO.getPassword(), userPostDTO.getEmail(), userPostDTO.getRole());
     }
 }

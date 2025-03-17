@@ -1,5 +1,6 @@
 package com.aldinalj.admin_course_app.ControllerTest;
 
+import com.aldinalj.admin_course_app.model.DTO.UserGetDTO;
 import com.aldinalj.admin_course_app.model.User;
 import com.aldinalj.admin_course_app.repository.UserRepository;
 import com.aldinalj.admin_course_app.service.UserService;
@@ -118,14 +119,13 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         // Get user & print
-        Optional<User> updatedUser = userService.getUserById(testUserId);
+        Optional<UserGetDTO> updatedUser = userService.getUserById(testUserId);
         if (updatedUser.isPresent()) {
-            User user = updatedUser.get();
+            UserGetDTO user = updatedUser.get();
             System.out.println("User is updated:");
             System.out.println("ID: " + user.getId() +
                     ", Name: " + user.getFirstName() + " " + user.getLastName() +
-                    ", Email: " + user.getEmail() +
-                    ", Role: " + user.getRole());
+                    ", Email: " + user.getEmail());
         } else {
             System.out.println("User could not be found after update!");
         }
