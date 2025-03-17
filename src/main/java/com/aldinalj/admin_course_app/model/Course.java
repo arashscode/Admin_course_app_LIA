@@ -1,15 +1,10 @@
 package com.aldinalj.admin_course_app.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-
 import java.time.LocalDate;
 
 @Entity
@@ -18,20 +13,32 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotBlank
     private String name;
+
     @NotBlank
     private String code;
+
     @FutureOrPresent
     private LocalDate startDate;
+
     @Future
     private LocalDate endDate;
+
     @NotBlank
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Category category;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -74,4 +81,11 @@ public class Course {
         this.description = description;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
