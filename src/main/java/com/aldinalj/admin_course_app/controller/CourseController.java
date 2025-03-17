@@ -33,14 +33,16 @@ public class CourseController {
         }
     }
 
-    //TODO
-    //add 404 IF NOT FOUND
 
     @Operation(summary = "Update existing course in database")
     @PutMapping("/{id}")
     public ResponseEntity<String> updateCourse(@PathVariable Integer id, @RequestBody Course updatedCourse) {
 
         Optional<Course> course = courseService.getCourseById(id);
+
+        if (!course.isPresent()) {
+            return ResponseEntity.status(404).body("Course not found");
+        }
 
         Course existingCourse = course.get();
 
@@ -82,7 +84,7 @@ public class CourseController {
 
     }
 
-
+    @Operation(summary = "Get course by id from database")
     @GetMapping("/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable Integer id){
         Optional<Course> optionalCourse = courseService.getCourseById(id);
