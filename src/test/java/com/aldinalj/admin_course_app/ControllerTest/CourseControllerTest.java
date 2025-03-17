@@ -41,7 +41,8 @@ public class CourseControllerTest {
                             "code": "T2026",
                             "startDate": "2026-03-07",
                             "endDate": "2099-03-07",
-                            "description": "testDescription"                       
+                            "description": "testDescription",
+                            "category": "PROGRAMMING"
                         }
                         """))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
@@ -86,7 +87,8 @@ public class CourseControllerTest {
                     "code": "T2027",
                     "startDate": "2027-03-07",
                     "endDate": "2099-03-07",
-                    "description": "testDescription"                   
+                    "description": "testDescription",
+                    "category": "DATA_SCIENCE"                   
                 }
                 """))
                 .andExpect(MockMvcResultMatchers.status().isOk());

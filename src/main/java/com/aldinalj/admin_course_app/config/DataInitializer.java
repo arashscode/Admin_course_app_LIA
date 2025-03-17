@@ -1,5 +1,6 @@
 package com.aldinalj.admin_course_app.config;
 
+import com.aldinalj.admin_course_app.model.Category;
 import com.aldinalj.admin_course_app.model.Course;
 import com.aldinalj.admin_course_app.model.User;
 import com.aldinalj.admin_course_app.repository.CourseRepository;
@@ -24,6 +25,7 @@ public class DataInitializer {
                 dummyCourse.setStartDate(LocalDate.now());
                 dummyCourse.setEndDate(LocalDate.of(2099, 12, 31));
                 dummyCourse.setDescription("This is a dummy course");
+                dummyCourse.setCategory(Category.PROGRAMMING);
 
                 courseService.createOrUpdateCourse(dummyCourse);
                 System.out.println("Dummy course added!");
