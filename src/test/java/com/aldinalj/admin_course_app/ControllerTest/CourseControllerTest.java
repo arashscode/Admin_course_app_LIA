@@ -1,111 +1,180 @@
 package com.aldinalj.admin_course_app.ControllerTest;
 
-import com.aldinalj.admin_course_app.controller.CourseController;
+import com.aldinalj.admin_course_app.model.Category;
+import com.aldinalj.admin_course_app.model.DTO.CourseDTO;
 import com.aldinalj.admin_course_app.service.CourseService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-//TODO
-//Test size of number of courses
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test") //  Better option for multiple test. Otherwise, use code below. /Arash
-//@TestPropertySource(locations = "classpath:application-test.properties")
+@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)  // 🔥 Säkerställer testordning
 public class CourseControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private CourseService courseService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private static Long testCourseId;
 
     @BeforeEach
     @WithMockUser(roles = "ADMIN")
     void setUp() throws Exception {
+        System.out.println("\n Setting up test data...");
 
-        this.mockMvc.perform(post("/api/courses")
+        MvcResult result = this.mockMvc.perform(post("/api/courses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                        {
-                            "name": "TestCourse",
-                            "code": "T2026",
-                            "startDate": "2026-03-07",
-                            "endDate": "2099-03-07",
-                            "description": "testDescription",
-                            "category": "PROGRAMMING"
-                        }
-                        """))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+                                {
+                                    "name": "Java Basics",
+                                    "code": "JAVA101",
+                                    "startDate": "2025-04-01",
+                                    "endDate": "2025-06-01",
+                                    "category": "PROGRAMMING",
+                                    "description": "Learn Java fundamentals"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+
+        // GET ID from DB. Also trying out tests by order
+        Optional<CourseDTO> optionalCourse = courseService.getAllCourses()
+                .stream().filter(c -> c.getName().equals("Java Basics")).findFirst();
+
+        if (optionalCourse.isPresent()) {
+            testCourseId = optionalCourse.get().getId();
+            System.out.println("Test course created with ID: " + testCourseId);
+        } else {
+            throw new RuntimeException("Test course could not be created.");
+        }
     }
 
     @Test
+    @Order(1)
     @WithMockUser(roles = "ADMIN")
-    void courseControllerGetTest() throws Exception {
+    void shouldReturnAllCourses() throws Exception {
+        System.out.println("\n🟢 Running test: shouldReturnAllCourses");
         this.mockMvc.perform(get("/api/courses"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+        System.out.println("✅ Test passed!");
     }
+
     @Test
+    @Order(2)
     @WithMockUser(roles = "ADMIN")
-    void courseControllerGetIdTest() throws Exception {
-
-        Long testCourseId = courseService.getCourseId("TestCourse");
-
-
+    void shouldReturnCourseById() throws Exception {
+        System.out.println("\n🟢 Running test: shouldReturnCourseById");
         this.mockMvc.perform(get("/api/courses/" + testCourseId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+        System.out.println("✅ Test passed!");
     }
 
     @Test
+    @Order(3)
     @WithMockUser(roles = "ADMIN")
-    void courseControllerGetIdFailTest() throws Exception {
+    void shouldReturnNotFoundForInvalidCourseId() throws Exception {
+        System.out.println("\n🟢 Running test: shouldReturnNotFoundForInvalidCourseId");
         this.mockMvc.perform(get("/api/courses/0"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+        System.out.println("✅ Test passed!");
     }
-
 
     @Test
+    @Order(4)
     @WithMockUser(roles = "ADMIN")
-    void CourseControllerPutTest() throws Exception{
-
-        Long testCourseId = courseService.getCourseId("TestCourse");
-
-        this.mockMvc.perform(put("/api/courses/" + testCourseId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                {              
-                    "name": "TestCourse",
-                    "code": "T2027",
-                    "startDate": "2027-03-07",
-                    "endDate": "2099-03-07",
-                    "description": "testDescription",
-                    "category": "DATA_SCIENCE"                   
-                }
-                """))
+    void shouldReturnCoursesByCategory() throws Exception {
+        System.out.println("\n🟢 Running test: shouldReturnCoursesByCategory");
+        this.mockMvc.perform(get("/api/courses?category=PROGRAMMING"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+        System.out.println("✅ Test passed!");
     }
+
+    @Test
+    @Order(5)
+    @WithMockUser(roles = "ADMIN")
+    void shouldReturnCoursesBySearchName() throws Exception {
+        System.out.println("\n🟢 Running test: shouldReturnCoursesBySearchName");
+        this.mockMvc.perform(get("/api/courses?search=Java"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        System.out.println("✅ Test passed!");
+    }
+
+    @Test
+    @Order(6)
+    @WithMockUser(roles = "ADMIN")
+    void shouldUpdateCourse() throws Exception {
+        System.out.println("\n🟢 Running test: shouldUpdateCourse");
+        this.mockMvc.perform(put("/api/courses/" + testCourseId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "Advanced Java",
+                                    "code": "JAVA201",
+                                    "startDate": "2025-05-01",
+                                    "endDate": "2025-07-01",
+                                    "category": "PROGRAMMING",
+                                    "description": "Advanced Java concepts"
+                                }
+                                """))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Optional<CourseDTO> updatedCourse = courseService.getCourseById(testCourseId);
+        updatedCourse.ifPresent(course -> {
+            System.out.println("🔍 Updated Course:");
+            System.out.println("ID: " + course.getId() + ", Name: " + course.getName());
+        });
+
+        System.out.println("✅ Test passed!");
+    }
+
 
     @AfterEach
     @WithMockUser(roles = "ADMIN")
     void tearDown() throws Exception {
-            Long testCourseId = courseService.getCourseId("TestCourse");
-            this.mockMvc.perform(delete("/api/courses/" + testCourseId))
-                    .andExpect(MockMvcResultMatchers.status().isNoContent());
-        }
+        System.out.println("\n🔥 Cleaning up test data...");
+        this.mockMvc.perform(delete("/api/courses/" + testCourseId))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        System.out.println("✅ Cleanup done!");
     }
 
+    @Test
+    @Order(7)
+    @WithMockUser(roles = "ADMIN")
+    void debugPrintCourses() {
+        System.out.println("\n🟢 Running debugPrintCourses:");
+        courseService.getAllCourses().forEach(course ->
+                System.out.println("ID: " + course.getId() +
+                        ", Name: " + course.getName() +
+                        ", Category: " + course.getCategory()));
+    }
 
-
-
+    @Test
+    @Order(8)
+    @WithMockUser(roles = "ADMIN")
+    void debugPrintTables() {
+        System.out.println("\n🟢 Running debugPrintTables:");
+        @SuppressWarnings("unchecked")
+        var tables = (java.util.List<Object[]>) entityManager.createNativeQuery("SHOW TABLES").getResultList();
+        tables.forEach(table -> System.out.println("Table: " + table[0]));
+    }
+}
