@@ -6,5 +6,5 @@ public enum Category {
     BUSINESS,
     MARKETING,
     DATA_SCIENCE,
-    OTHER;
+    OTHER
 }

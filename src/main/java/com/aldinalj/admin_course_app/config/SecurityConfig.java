@@ -39,9 +39,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/**" ).hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/**" ).hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/**" ).hasAnyRole("USER", "ADMIN")
-
-
-
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
 
