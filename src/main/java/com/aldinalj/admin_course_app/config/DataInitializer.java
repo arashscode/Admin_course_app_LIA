@@ -2,6 +2,7 @@ package com.aldinalj.admin_course_app.config;
 
 import com.aldinalj.admin_course_app.model.Category;
 import com.aldinalj.admin_course_app.model.Course;
+import com.aldinalj.admin_course_app.model.DTO.CourseDTO;
 import com.aldinalj.admin_course_app.model.User;
 import com.aldinalj.admin_course_app.repository.CourseRepository;
 import com.aldinalj.admin_course_app.service.CourseService;
@@ -18,16 +19,28 @@ public class DataInitializer {
     @Bean
     public ApplicationRunner initDatabase(CourseService courseService, UserService userService) {
         return args -> {
+            // 🟢 Skapa en dummy-kurs om det inte finns några kurser i databasen
             if (courseService.getAllCourses().isEmpty()) {
                 Course dummyCourse = new Course();
                 dummyCourse.setName("Dummy");
-                dummyCourse.setCode("Dummy");
+                dummyCourse.setCode("DUMMY101");
                 dummyCourse.setStartDate(LocalDate.now());
                 dummyCourse.setEndDate(LocalDate.of(2099, 12, 31));
-                dummyCourse.setDescription("This is a dummy course");
                 dummyCourse.setCategory(Category.PROGRAMMING);
+                dummyCourse.setDescription("This is a dummy course");
 
-                courseService.createOrUpdateCourse(dummyCourse);
+                // 🟢 Konvertera Course till CourseDTO innan vi skickar det
+                CourseDTO dummyCourseDTO = new CourseDTO(
+                        null, // ID sätts av databasen
+                        dummyCourse.getName(),
+                        dummyCourse.getCode(),
+                        dummyCourse.getStartDate(),
+                        dummyCourse.getEndDate(),
+                        dummyCourse.getCategory(),
+                        dummyCourse.getDescription()
+                );
+
+                courseService.createOrUpdateCourse(dummyCourseDTO);
                 System.out.println("Dummy course added!");
             } else {
                 System.out.println("Database already contains courses");
