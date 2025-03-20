@@ -12,10 +12,10 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Tillåter alla endpoints
-                        .allowedOrigins("http://localhost:5173") // Anpassa efter frontendens URL
-                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Tillåtna HTTP-metoder
-                        .allowedHeaders("*") // Tillåter alla headers
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
                         .allowCredentials(true);
             }
         };
