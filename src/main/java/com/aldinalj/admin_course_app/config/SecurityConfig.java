@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +31,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/login" ).permitAll()
@@ -40,7 +42,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/**" ).hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/**" ).hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                );
+        http
+                .logout(logout -> logout
+                        .logoutUrl("/logout")  // ✅ Logout måste göras med en POST-request till /logout
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                );
 
 
 
