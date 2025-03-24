@@ -38,9 +38,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT,"/api/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
-                        .sessionManagement(session -> session  //code from frontend
-                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        );
+                .sessionManagement(session -> session  //code from frontend
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                );
+
+
         http
                 //.formLogin(Customizer.withDefaults()) //This i original from backend, not in updated request from frontend.
                 .logout(logout -> logout
