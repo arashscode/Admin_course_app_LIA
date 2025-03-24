@@ -1,4 +1,4 @@
-package com.aldinalj.admin_course_app.controller;
+/* package com.aldinalj.admin_course_app.controller;
 
 import com.aldinalj.admin_course_app.model.LoginRequest;
 import com.aldinalj.admin_course_app.service.TokenService;
@@ -31,4 +31,4 @@ public class AuthController {
         String token = tokenService.generateToken(auth);
         return ResponseEntity.ok(token);
     }
-}
+} */

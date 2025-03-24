@@ -1,4 +1,4 @@
-package com.aldinalj.admin_course_app.util;
+/* package com.aldinalj.admin_course_app.util;
 
 import com.nimbusds.jose.jwk.RSAKey;
 
@@ -29,4 +29,4 @@ public class JwksUtil {
                 .keyID(UUID.randomUUID().toString())
                 .build();
     }
-}
+} */

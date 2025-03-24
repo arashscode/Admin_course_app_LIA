@@ -1,4 +1,4 @@
-package com.aldinalj.admin_course_app.service;
+/* package com.aldinalj.admin_course_app.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,3 +35,4 @@ public class TokenService {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }
+*/
