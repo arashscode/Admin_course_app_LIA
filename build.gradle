@@ -25,10 +25,12 @@ dependencies {
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
     runtimeOnly 'org.postgresql:postgresql'
-    implementation 'com.h2database:h2:2.2.224'  // <-- H2 dependency /Arash
+    implementation 'com.h2database:h2:2.2.224'  // H2 dependency /Arash
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server' // JWT & Oath Resource /Arash
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.31' //Nimbus JOSE + JWT for Spring Security /Arash
 }
 
 tasks.named('test') {
