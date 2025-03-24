@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session  //code from frontend
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 );
+
         http
                 //.formLogin(Customizer.withDefaults()) //This i original from backend, not in updated request from frontend.
                 .logout(logout -> logout
