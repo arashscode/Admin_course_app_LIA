@@ -28,7 +28,7 @@ class CourseDTOTest {
 
     @Test
     void shouldBeValidForNewCourseWithoutId() {
-        System.out.println("\n🟢 Running test: shouldBeValidForNewCourseWithoutId");
+        System.out.println("\n* Running test: shouldBeValidForNewCourseWithoutId");
 
         CourseDTO validCourse = new CourseDTO(
                 "Java Basics",
@@ -48,7 +48,7 @@ class CourseDTOTest {
 
     @Test
     void shouldBeValidForExistingCourseWithId() {
-        System.out.println("\n🟢 Running test: shouldBeValidForExistingCourseWithId");
+        System.out.println("\n* Running test: shouldBeValidForExistingCourseWithId");
 
         CourseDTO validCourse = new CourseDTO(
                 1L,
@@ -69,7 +69,7 @@ class CourseDTOTest {
 
     @Test
     void shouldFailValidationIfNameIsBlank() {
-        System.out.println("\n🟢 Running test: shouldFailValidationIfNameIsBlank");
+        System.out.println("\n* Running test: shouldFailValidationIfNameIsBlank");
 
         CourseDTO course = new CourseDTO(
                 null,
@@ -90,7 +90,7 @@ class CourseDTOTest {
 
     @Test
     void shouldFailValidationIfCodeIsBlank() {
-        System.out.println("\n🟢 Running test: shouldFailValidationIfCodeIsBlank");
+        System.out.println("\n* Running test: shouldFailValidationIfCodeIsBlank");
 
         CourseDTO course = new CourseDTO(
                 null,
@@ -111,7 +111,7 @@ class CourseDTOTest {
 
     @Test
     void shouldFailValidationIfEndDateIsInThePast() {
-        System.out.println("\n🟢 Running test: shouldFailValidationIfEndDateIsInThePast");
+        System.out.println("\n* Running test: shouldFailValidationIfEndDateIsInThePast");
 
         CourseDTO course = new CourseDTO(
                 null,
@@ -132,7 +132,7 @@ class CourseDTOTest {
 
     @Test
     void shouldFailValidationIfDescriptionIsBlank() {
-        System.out.println("\n🟢 Running test: shouldFailValidationIfDescriptionIsBlank");
+        System.out.println("\n* Running test: shouldFailValidationIfDescriptionIsBlank");
 
         CourseDTO course = new CourseDTO(
                 null,
@@ -153,7 +153,7 @@ class CourseDTOTest {
 
     @Test
     void shouldFailValidationIfCategoryIsNull() {
-        System.out.println("\n🟢 Running test: shouldFailValidationIfCategoryIsNull");
+        System.out.println("\n* Running test: shouldFailValidationIfCategoryIsNull");
 
         CourseDTO course = new CourseDTO(
                 null,
