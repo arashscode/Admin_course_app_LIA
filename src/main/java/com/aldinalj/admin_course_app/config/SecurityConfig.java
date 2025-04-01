@@ -31,12 +31,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Activate in production
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/login").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/api/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/api/**").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated()
+                          .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/login").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.POST,"/api/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.GET,"/api/**").hasAnyRole("USER", "ADMIN")
+//                        .requestMatchers(HttpMethod.PUT,"/api/**").hasAnyRole("USER", "ADMIN")
+                          .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session  //code from frontend
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
